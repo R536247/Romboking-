@@ -47,6 +47,8 @@ public class RoomController : Controller
         return View(room);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(Room room)
     {
         if (!ModelState.IsValid)
@@ -60,4 +62,39 @@ public class RoomController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-}
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, Room room)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(room);
+        }
+        var roomToUpdate = _rooms.FirstOrDefault(n => n.RoomId == id);
+        if (roomToUpdate == null)
+        {
+            return NotFound();
+        } 
+        roomToUpdate.Name = room.Name;
+        roomToUpdate.Building = room.Building;
+        roomToUpdate.Capacity = room.Capacity;
+        roomToUpdate.HasScreen = room.HasScreen;
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Delete(int id)
+    {
+        var room = _rooms.FirstOrDefault(n => n.RoomId == id);
+        if (room == null)
+        {
+            return NotFound();
+        }
+        _rooms.Remove(room);
+
+        return RedirectToAction(nameof(Index));
+    }
+} 
