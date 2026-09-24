@@ -6,7 +6,7 @@ namespace StudyRoomBooking.Controllers;
 public class RoomController : Controller
 {
     // added test/prototype data
-    private List<Room> _rooms = new()
+    private static readonly List<Room> _rooms = new()
     {
         new Room
         {
@@ -34,6 +34,30 @@ public class RoomController : Controller
     // Pending Views/Rooms/Index.cshtml
     public IActionResult Index()
     {
-        return View();
+        return View(_rooms);
+    }
+
+    public IActionResult Details(int id)
+    {
+        var room = _rooms.FirstOrDefault(n => n.RoomId == id);
+        if (room == null)
+        {
+            return NotFound();
+        }
+        return View(room);
+    }
+
+    public IActionResult Create(Room room)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(room);
+        }
+        // tmp generator for RoomId, checks if there are rooms in list, 
+        // increment Id if so. This can later be handled bt DB with Primary Key etc
+        room.RoomId = _rooms.Count == 0 ? 1 : _rooms.Max(n => n.RoomId) + 1;
+        _rooms.Add(room);
+
+        return RedirectToAction(nameof(Index));
     }
 }
