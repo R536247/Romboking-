@@ -13,6 +13,6 @@ public class RoomController : Controller
     // Pending Views/Rooms/Index.cshtml
     public IActionResult Index()
     {
-        
+        return View();
     }
 }
