@@ -133,11 +133,11 @@ public class StudySessionRepository : IStudySessionRepository
         }
     }
 
-    /// <summary>
+
     /// Returns true if the room already has a session overlapping the given time span.
     /// Two spans overlap when each one starts before the other ends.
     /// excludeSessionId is used when editing, so a session does not conflict with itself.
-    /// </summary>
+    
     public async Task<bool> HasConflict(int roomId, DateTime start, DateTime end, int? excludeSessionId = null)
     {
         try

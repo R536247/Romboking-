@@ -1,100 +1,43 @@
 using Microsoft.AspNetCore.Mvc;
+using StudyRoomBooking.DAL;
 using StudyRoomBooking.Models;
 
 namespace StudyRoomBooking.Controllers;
 
+// Lets students browse rooms and see each room's bookings
 public class RoomController : Controller
 {
-    // added test/prototype data
-    private static readonly List<Room> _rooms = new()
-    {
-        new Room
-        {
-            RoomId = 1,
-            Name = "Study Room A",
-            Building = "Pilestredet 35",
-            Capacity = 6,
-            HasScreen = true
-        },
+    private readonly IRoomRepository _roomRepository;
+    private readonly ILogger<RoomController> _logger;
 
-        new Room
+    public RoomController(IRoomRepository roomRepository, ILogger<RoomController> logger)
+    {
+        _roomRepository = roomRepository;
+        _logger = logger;
+    }
+
+    // GET: /Room
+    public async Task<IActionResult> Index()
+    {
+        var rooms = await _roomRepository.GetAll();
+        if (rooms == null)
         {
-                        RoomId = 2,
-            Name = "Study Room B",
-            Building = "Pilestredet 52",
-            Capacity = 4,
-            HasScreen = false
+            _logger.LogError("[RoomController] Room list could not be loaded");
+            ViewData["Error"] = "The rooms could not be loaded. Refresh the page to try again.";
+            rooms = Enumerable.Empty<Room>();
         }
-    };
-    public RoomController()
-    {
-
+        return View(rooms);
     }
 
-    // Pending Views/Rooms/Index.cshtml
-    public IActionResult Index()
+    // GET: /Room/Details/5
+    public async Task<IActionResult> Details(int id)
     {
-        return View(_rooms);
-    }
-
-    public IActionResult Details(int id)
-    {
-        var room = _rooms.FirstOrDefault(n => n.RoomId == id);
+        var room = await _roomRepository.GetById(id);
         if (room == null)
         {
+            _logger.LogWarning("[RoomController] Room {RoomId} not found", id);
             return NotFound();
         }
         return View(room);
     }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(Room room)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(room);
-        }
-        // tmp generator for RoomId, checks if there are rooms in list, 
-        // increment Id if so. This can later be handled bt DB with Primary Key etc
-        room.RoomId = _rooms.Count == 0 ? 1 : _rooms.Max(n => n.RoomId) + 1;
-        _rooms.Add(room);
-
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id, Room room)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(room);
-        }
-        var roomToUpdate = _rooms.FirstOrDefault(n => n.RoomId == id);
-        if (roomToUpdate == null)
-        {
-            return NotFound();
-        } 
-        roomToUpdate.Name = room.Name;
-        roomToUpdate.Building = room.Building;
-        roomToUpdate.Capacity = room.Capacity;
-        roomToUpdate.HasScreen = room.HasScreen;
-
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Delete(int id)
-    {
-        var room = _rooms.FirstOrDefault(n => n.RoomId == id);
-        if (room == null)
-        {
-            return NotFound();
-        }
-        _rooms.Remove(room);
-
-        return RedirectToAction(nameof(Index));
-    }
-} 
+}

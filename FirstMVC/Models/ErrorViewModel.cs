@@ -1,5 +1,6 @@
-namespace FirstMVC.Models;
+namespace StudyRoomBooking.Models;
 
+// Data shown on the generic error page.
 public class ErrorViewModel
 {
     public string? RequestId { get; set; }
