@@ -16,7 +16,7 @@ public class RoomController : Controller
         _logger = logger;
     }
 
-    // GET: /Room
+    // GET: Room
     public async Task<IActionResult> Index()
     {
         var rooms = await _roomRepository.GetAll();
@@ -29,7 +29,7 @@ public class RoomController : Controller
         return View(rooms);
     }
 
-    // GET: /Room/Details/5
+    // GET: Room Details 5
     public async Task<IActionResult> Details(int id)
     {
         var room = await _roomRepository.GetById(id);
