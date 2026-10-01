@@ -1,0 +1,141 @@
+@model IEnumerable<StudyRoomBooking.Models.Room>
+
+@{
+    ViewData["Title"] = "Rooms";
+    var now = DateTime.Now;
+}
+
+<div class="page-head">
+    <div>
+        <h1>Rooms</h1>
+
+        <p class="text-muted mb-0">
+            Study rooms you can book on campus.
+            Open a room to see when it is taken.
+        </p>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive room-table">
+
+        <table class="table align-middle mb-0">
+
+            <thead>
+                <tr>
+                    <th scope="col">Room</th>
+
+                    <th scope="col">
+                        Building
+                    </th>
+
+                    <th scope="col" class="text-end">
+                        Seats
+                    </th>
+
+                    <th scope="col">
+                        Screen
+                    </th>
+
+                    <th scope="col" class="text-end">
+                        Upcoming bookings
+                    </th>
+
+                    <th scope="col">
+                        <span class="visually-hidden">
+                            Actions
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var room in Model)
+                {
+                    var upcoming = room.StudySessions?
+                        .Count(s => s.EndTime >= now) ?? 0;
+
+                    <tr>
+
+                        <td class="fw-semibold">
+                            @room.Name
+                        </td>
+
+                        <td>
+                            @room.Building
+                        </td>
+
+                        <td class="text-end">
+                            @room.Capacity
+                        </td>
+
+                        <td>
+                            @if (room.HasScreen)
+                            {
+                                <i class="bi bi-display"
+                                   aria-hidden="true"></i>
+
+                                <span class="ms-1">
+                                    Yes
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    No
+                                </span>
+                            }
+                        </td>
+
+                        <td class="text-end">
+                            @upcoming
+                        </td>
+
+                        <td class="text-end text-nowrap">
+
+                            <a class="btn btn-sm btn-outline-ink"
+                               asp-controller="Room"
+                               asp-action="Details"
+                               asp-route-id="@room.RoomId">
+
+                                <i class="bi bi-calendar3 me-1"></i>
+                                Schedule
+
+                            </a>
+
+                            <a class="btn btn-sm btn-ink"
+                               asp-controller="StudySession"
+                               asp-action="Create"
+                               asp-route-roomId="@room.RoomId">
+
+                                <i class="bi bi-plus-lg me-1"></i>
+                                Book
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+}
+else
+{
+    <div class="empty-state">
+
+        <i class="bi bi-building"
+           aria-hidden="true"></i>
+
+        <p>
+            No rooms are registered yet.
+        </p>
+
+    </div>
+}

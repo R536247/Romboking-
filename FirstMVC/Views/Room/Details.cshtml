@@ -1,0 +1,41 @@
+@model StudyRoomBooking.Models.Room
+@{
+    ViewData["Title"] = Model.Name;
+    var now = DateTime.Now;
+    var upcoming = Model.StudySessions.Where(s => s.EndTime >= now).ToList();
+}
+<nav class="back-link"><a asp-action="Index"><i class="bi bi-arrow-left"></i> All rooms</a></nav>
+
+<div class="page-head">
+    <div>
+        <h1>@Model.Name</h1>
+        <p class="room-facts">
+            <span><i class="bi bi-building"></i> @Model.Building</span>
+            <span><i class="bi bi-people"></i> @Model.Capacity seats</span>
+            <span><i class="bi bi-display"></i> @(Model.HasScreen ? "Screen" : "No screen")</span>
+        </p>
+    </div>
+    <a class="btn btn-signal" asp-controller="StudySession" asp-action="Create" asp-route-roomId="@Model.RoomId">
+        <i class="bi bi-plus-lg me-1"></i>Book this room
+    </a>
+</div>
+
+<h2 class="section-title">Booked times</h2>
+@if (upcoming.Any())
+{
+    <div class="slot-list">
+        @foreach (var session in upcoming)
+        {
+            session.Room = Model; // the partial shows the room name
+            <partial name="_SessionSlot" model="session" />
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="bi bi-calendar-check" aria-hidden="true"></i>
+        <p>This room has no upcoming bookings. It is free whenever you need it.</p>
+        <a class="btn btn-ink" asp-controller="StudySession" asp-action="Create" asp-route-roomId="@Model.RoomId">Book this room</a>
+    </div>
+}

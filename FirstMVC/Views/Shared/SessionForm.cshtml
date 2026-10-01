@@ -1,0 +1,284 @@
+@model StudyRoomBooking.Models.StudySession
+
+<form method="post" class="session-form" novalidate>
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger"
+         role="alert">
+    </div>
+
+    <input type="hidden" asp-for="StudySessionId" />
+
+    <!-- SECTION 1: STUDY DETAILS -->
+    <section class="form-section">
+
+        <div class="form-section-header">
+            <span class="section-number">01</span>
+
+            <div>
+                <h2>Study details</h2>
+                <p>Tell other students what you are going to study.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Course Code -->
+            <div class="col-md-4">
+
+                <label asp-for="CourseCode" class="form-label">
+                    Course code
+                </label>
+
+                <div class="input-icon">
+                    <i class="bi bi-book"></i>
+
+                    <input asp-for="CourseCode"
+                           class="form-control"
+                           placeholder="ITPE3200" />
+                </div>
+
+                <span asp-validation-for="CourseCode"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+            <!-- Subject -->
+            <div class="col-md-8">
+
+                <label asp-for="Subject" class="form-label">
+                    Subject
+                </label>
+
+                <input asp-for="Subject"
+                       class="form-control"
+                       placeholder="Web Applications" />
+
+                <span asp-validation-for="Subject"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+            <!-- Topic -->
+            <div class="col-12">
+
+                <label asp-for="Topic" class="form-label">
+                    Topic
+                </label>
+
+                <input asp-for="Topic"
+                       class="form-control"
+                       placeholder="What will the group work on?" />
+
+                <span asp-validation-for="Topic"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+
+                <div class="label-row">
+
+                    <label asp-for="Description"
+                           class="form-label">
+                        Description
+                    </label>
+
+                    <span class="optional-badge">
+                        Optional
+                    </span>
+
+                </div>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Add notes, preparation instructions or anything students should know..."></textarea>
+
+                <span asp-validation-for="Description"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SECTION 2: ROOM AND TIME -->
+    <section class="form-section">
+
+        <div class="form-section-header">
+
+            <span class="section-number">02</span>
+
+            <div>
+                <h2>Room &amp; time</h2>
+                <p>Choose where and when the study session takes place.</p>
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Room -->
+            <div class="col-12">
+
+                <label asp-for="RoomId"
+                       class="form-label">
+                    Study room
+                </label>
+
+                <select asp-for="RoomId"
+                        asp-items="ViewBag.Rooms"
+                        class="form-select">
+
+                    <option value="0">
+                        Select a study room
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="RoomId"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+            <!-- Start Time -->
+            <div class="col-md-6">
+
+                <label asp-for="StartTime"
+                       class="form-label">
+                    Starts
+                </label>
+
+                <input asp-for="StartTime"
+                       class="form-control" />
+
+                <span asp-validation-for="StartTime"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+            <!-- End Time -->
+            <div class="col-md-6">
+
+                <label asp-for="EndTime"
+                       class="form-label">
+                    Ends
+                </label>
+
+                <input asp-for="EndTime"
+                       class="form-control" />
+
+                <span asp-validation-for="EndTime"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SECTION 3: GROUP -->
+    <section class="form-section">
+
+        <div class="form-section-header">
+
+            <span class="section-number">03</span>
+
+            <div>
+                <h2>Group</h2>
+                <p>Who is organizing and how many students can join?</p>
+            </div>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Organizer -->
+            <div class="col-md-8">
+
+                <label asp-for="OrganizerName"
+                       class="form-label">
+                    Organizer
+                </label>
+
+                <div class="input-icon">
+
+                    <i class="bi bi-person"></i>
+
+                    <input asp-for="OrganizerName"
+                           class="form-control"
+                           autocomplete="given-name"
+                           placeholder="Your name" />
+
+                </div>
+
+                <span asp-validation-for="OrganizerName"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+            <!-- Maximum Participants -->
+            <div class="col-md-4">
+
+                <label asp-for="MaxParticipants"
+                       class="form-label">
+                    Group size
+                </label>
+
+                <div class="input-icon">
+
+                    <i class="bi bi-people"></i>
+
+                    <input asp-for="MaxParticipants"
+                           class="form-control"
+                           min="2"
+                           max="50" />
+
+                </div>
+
+                <span asp-validation-for="MaxParticipants"
+                      class="invalid-text">
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTION BUTTONS -->
+    <div class="session-form-actions">
+
+        <a href="@ViewData["CancelUrl"]"
+           class="btn btn-outline-ink">
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Cancel
+
+        </a>
+
+        <button type="submit"
+                class="btn btn-signal">
+
+            <i class="bi bi-check-lg me-1"></i>
+            @ViewData["SubmitLabel"]
+
+        </button>
+
+    </div>
+
+</form>

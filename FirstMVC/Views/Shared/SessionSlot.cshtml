@@ -1,0 +1,106 @@
+@model StudyRoomBooking.Models.StudySession
+
+@{
+    var isPast = Model.EndTime < DateTime.Now;
+}
+
+<a class="slot @(isPast ? "slot-past" : "")"
+   asp-controller="StudySession"
+   asp-action="Details"
+   asp-route-id="@Model.StudySessionId">
+
+    <!-- DATE AND TIME -->
+    <div class="slot-time">
+
+        <span class="slot-day">
+            @Model.StartTime.ToString("ddd d MMM")
+        </span>
+
+        <span class="slot-hours">
+            @Model.StartTime.ToString("HH:mm")
+            –
+            @Model.EndTime.ToString("HH:mm")
+        </span>
+
+    </div>
+
+
+    <!-- SESSION INFORMATION -->
+    <div class="slot-body">
+
+        <div class="slot-heading">
+
+            <span class="course-code">
+                @Model.CourseCode
+            </span>
+
+            @if (isPast)
+            {
+                <span class="badge text-bg-secondary">
+                    Finished
+                </span>
+            }
+            else
+            {
+                <span class="badge text-bg-success">
+                    Upcoming
+                </span>
+            }
+
+        </div>
+
+
+        <h3 class="slot-topic">
+            @Model.Topic
+        </h3>
+
+
+        @if (!string.IsNullOrWhiteSpace(Model.Subject))
+        {
+            <p class="slot-subject">
+                @Model.Subject
+            </p>
+        }
+
+
+        <div class="slot-meta">
+
+            <!-- Room -->
+            <span>
+                <i class="bi bi-door-open"></i>
+
+                @if (Model.Room != null)
+                {
+                    @Model.Room.Name
+                }
+                else
+                {
+                    <text>Unknown room</text>
+                }
+            </span>
+
+
+            <!-- Organizer -->
+            <span>
+                <i class="bi bi-person"></i>
+                @Model.OrganizerName
+            </span>
+
+
+            <!-- Participants -->
+            <span>
+                <i class="bi bi-people"></i>
+                Up to @Model.MaxParticipants
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ARROW -->
+    <div class="slot-arrow">
+        <i class="bi bi-chevron-right"></i>
+    </div>
+
+</a>

@@ -1,0 +1,47 @@
+@model StudyRoomBooking.Models.StudySession
+
+@{
+    ViewData["Title"] = "Book a room";
+    ViewData["SubmitLabel"] = "Book room";
+    ViewData["CancelUrl"] = Url.Action("Index", "StudySession");
+}
+
+<nav class="back-link">
+    <a asp-controller="StudySession"
+       asp-action="Index">
+        <i class="bi bi-arrow-left"></i>
+        All study sessions
+    </a>
+</nav>
+
+<div class="form-head">
+
+    <div class="form-head-content">
+
+        <span class="form-kicker">
+            NEW STUDY SESSION
+        </span>
+
+        <h1>Book a room</h1>
+
+        <p class="text-muted">
+            Choose a room, set the time and tell other students
+            what you are planning to study.
+        </p>
+
+    </div>
+
+</div>
+
+<div class="form-container">
+
+    <partial name="_SessionForm"
+             model="Model" />
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

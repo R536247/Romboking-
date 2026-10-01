@@ -1,8 +1,109 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@model dynamic
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="home-dashboard">
+
+    <header class="welcome-section">
+        <span class="eyebrow">STUDY TOGETHER</span>
+
+        <h1>
+            Your next study<br />
+            session starts here.
+        </h1>
+
+        <p class="lead">
+            Find students to study with or book an available
+            room for your own study group.
+        </p>
+
+        <div class="home-actions">
+            <a class="btn btn-signal btn-lg"
+               asp-controller="StudySession"
+               asp-action="Create">
+                <i class="bi bi-plus-lg me-1"></i>
+                Book a room
+            </a>
+
+            <a class="btn btn-outline-ink btn-lg"
+               asp-controller="StudySession"
+               asp-action="Index">
+                Find a study group
+            </a>
+        </div>
+    </header>
+
+
+    <div class="room-summary">
+        <div class="summary-icon">
+            <i class="bi bi-building"></i>
+        </div>
+
+        <div>
+            <strong>@Model.RoomCount</strong>
+            <span>rooms available across campus</span>
+        </div>
+    </div>
+
+
+    <section class="upcoming-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">WHAT'S NEXT</span>
+                <h2>Upcoming study sessions</h2>
+            </div>
+
+            <a asp-controller="StudySession"
+               asp-action="Index"
+               class="view-all">
+                View all
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+
+        @if (Model.UpcomingSessions.Any())
+        {
+            <div class="session-grid">
+
+                @foreach (var session in Model.UpcomingSessions)
+                {
+                    <div class="session-card">
+                        <partial name="_SessionSlot" model="session" />
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-session-card">
+
+                <div class="empty-icon">
+                    <i class="bi bi-calendar-plus"></i>
+                </div>
+
+                <h3>No study sessions yet</h3>
+
+                <p>
+                    Be the first to create a study session
+                    and invite other students to join.
+                </p>
+
+                <a class="btn btn-ink"
+                   asp-controller="StudySession"
+                   asp-action="Create">
+                    Create first session
+                </a>
+
+            </div>
+        }
+
+    </section>
+
+</section>
+```

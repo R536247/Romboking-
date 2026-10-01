@@ -1,0 +1,37 @@
+﻿```cshtml
+@model int
+
+@{
+    var isNotFound = Model == 404;
+    ViewData["Title"] = isNotFound ? "Page not found" : $"Error {Model}";
+}
+
+<section class="status-page">
+    <p class="status-code">@Model</p>
+
+    @if (isNotFound)
+    {
+        <h1>This page does not exist</h1>
+        <p>The session or room may have been deleted, or the link may be incorrect.</p>
+    }
+    else
+    {
+        <h1>The request could not be completed</h1>
+        <p>Go back and try again, or start from the home page.</p>
+    }
+
+    <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <a class="btn btn-ink"
+           asp-controller="StudySession"
+           asp-action="Index">
+            View study sessions
+        </a>
+
+        <a class="btn btn-outline-ink"
+           asp-controller="Home"
+           asp-action="Index">
+            Home
+        </a>
+    </div>
+</section>
+```

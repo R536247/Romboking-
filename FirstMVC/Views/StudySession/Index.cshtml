@@ -1,0 +1,195 @@
+@model StudyRoomBooking.Models.StudySessionListViewModel
+
+@{
+    ViewData["Title"] = "Study sessions";
+
+    var count = Model.Sessions.Count();
+    var hasSearch = !string.IsNullOrWhiteSpace(Model.Search);
+}
+
+<div class="page-head">
+    <div>
+        <span class="form-kicker">STUDY TOGETHER</span>
+
+        <h1>Study sessions</h1>
+
+        <p class="text-muted mb-0">
+            Find a study group for your course, or create a new session and book a room.
+        </p>
+    </div>
+
+    <a class="btn btn-signal"
+       asp-controller="StudySession"
+       asp-action="Create">
+        <i class="bi bi-plus-lg me-1"></i>
+        Book a room
+    </a>
+</div>
+
+
+<div class="session-search">
+
+    <form method="get"
+          asp-controller="StudySession"
+          asp-action="Index"
+          class="search-bar"
+          role="search">
+
+        <label for="search" class="visually-hidden">
+            Search by course code, subject or topic
+        </label>
+
+        <div class="input-group">
+
+            <span class="input-group-text">
+                <i class="bi bi-search"></i>
+            </span>
+
+            <input id="search"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search by course code, subject or topic..." />
+
+            <button type="submit" class="btn btn-ink">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+
+    @if (hasSearch)
+    {
+        <div class="search-info">
+
+            <span>
+                Searching for:
+                <strong>@Model.Search</strong>
+            </span>
+
+            <a asp-controller="StudySession"
+               asp-action="Index"
+               class="clear-search">
+                <i class="bi bi-x-circle"></i>
+                Clear search
+            </a>
+
+        </div>
+    }
+
+</div>
+
+
+@if (count > 0)
+{
+    <section class="sessions-section">
+
+        <div class="sessions-heading">
+
+            <div>
+                <span class="section-kicker">
+                    AVAILABLE SESSIONS
+                </span>
+
+                <h2>
+                    @count @(count == 1 ? "session" : "sessions")
+                </h2>
+            </div>
+
+
+            @if (hasSearch)
+            {
+                <span class="search-result-label">
+                    Results for "@Model.Search"
+                </span>
+            }
+
+        </div>
+
+
+        <div class="slot-list">
+
+            @foreach (var session in Model.Sessions)
+            {
+                <partial name="_SessionSlot" model="session" />
+            }
+
+        </div>
+
+    </section>
+}
+else if (hasSearch)
+{
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            <i class="bi bi-search"></i>
+        </div>
+
+        <h2>No sessions found</h2>
+
+        <p>
+            We couldn't find any study sessions matching
+            "<strong>@Model.Search</strong>".
+        </p>
+
+        <p class="text-muted">
+            Try another course code, subject or topic,
+            or create a study session yourself.
+        </p>
+
+
+        <div class="empty-actions">
+
+            <a class="btn btn-signal"
+               asp-controller="StudySession"
+               asp-action="Create">
+
+                <i class="bi bi-plus-lg me-1"></i>
+                Create a study session
+
+            </a>
+
+
+            <a class="btn btn-outline-ink"
+               asp-controller="StudySession"
+               asp-action="Index">
+
+                <i class="bi bi-x-circle me-1"></i>
+                Clear search
+
+            </a>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            <i class="bi bi-calendar-plus"></i>
+        </div>
+
+        <h2>No study sessions yet</h2>
+
+        <p>
+            There are currently no upcoming study sessions.
+            Book a room and create the first one.
+        </p>
+
+
+        <a class="btn btn-signal"
+           asp-controller="StudySession"
+           asp-action="Create">
+
+            <i class="bi bi-plus-lg me-1"></i>
+            Book a room
+
+        </a>
+
+    </div>
+}

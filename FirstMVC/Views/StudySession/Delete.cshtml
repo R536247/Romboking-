@@ -1,0 +1,85 @@
+@model StudyRoomBooking.Models.StudySession
+
+@{
+    ViewData["Title"] = "Delete session";
+}
+
+<nav class="back-link">
+    <a asp-controller="StudySession"
+       asp-action="Details"
+       asp-route-id="@Model.StudySessionId">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to session
+
+    </a>
+</nav>
+
+
+<div class="confirm-panel">
+
+    <div class="confirm-header">
+
+        <div class="confirm-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+
+        <div>
+            <span class="form-kicker">
+                DELETE BOOKING
+            </span>
+
+            <h1>Delete this session?</h1>
+
+            <p class="text-muted">
+                The booking will be removed and the room will
+                become available for other students.
+                This action cannot be undone.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- SESSION PREVIEW -->
+    <div class="slot-list my-4">
+
+        <partial name="_SessionSlot"
+                 model="Model" />
+
+    </div>
+
+
+    <!-- DELETE FORM -->
+    <form asp-controller="StudySession"
+          asp-action="Delete"
+          asp-route-id="@Model.StudySessionId"
+          method="post"
+          class="form-actions">
+
+        <input type="hidden"
+               asp-for="StudySessionId" />
+
+
+        <button type="submit"
+                class="btn btn-danger">
+
+            <i class="bi bi-trash me-1"></i>
+            Delete session
+
+        </button>
+
+
+        <a class="btn btn-outline-ink"
+           asp-controller="StudySession"
+           asp-action="Details"
+           asp-route-id="@Model.StudySessionId">
+
+            <i class="bi bi-x-lg me-1"></i>
+            Keep session
+
+        </a>
+
+    </form>
+
+</div>

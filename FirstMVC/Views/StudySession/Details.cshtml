@@ -1,0 +1,226 @@
+@model StudyRoomBooking.Models.StudySession
+
+@{
+    ViewData["Title"] = $"{Model.CourseCode} – {Model.Topic}";
+    var isPast = Model.EndTime < DateTime.Now;
+    var duration = Model.EndTime - Model.StartTime;
+}
+
+<nav class="back-link">
+    <a asp-controller="StudySession"
+       asp-action="Index">
+        <i class="bi bi-arrow-left"></i>
+        All study sessions
+    </a>
+</nav>
+
+
+<div class="details-grid">
+
+    <!-- MAIN SESSION DETAILS -->
+    <article class="details-main">
+
+        <div class="details-header">
+
+            <div>
+                <span class="course-code">
+                    @Model.CourseCode
+                </span>
+
+                @if (isPast)
+                {
+                    <span class="badge text-bg-secondary ms-2">
+                        Finished
+                    </span>
+                }
+                else
+                {
+                    <span class="badge text-bg-success ms-2">
+                        Upcoming
+                    </span>
+                }
+            </div>
+
+            <h1>
+                @Model.Topic
+            </h1>
+
+            <p class="subject">
+                @Model.Subject
+            </p>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="details-description">
+
+                <h2>About this session</h2>
+
+                <p>
+                    @Model.Description
+                </p>
+
+            </div>
+        }
+
+
+        <!-- SESSION INFORMATION -->
+        <div class="session-info">
+
+            <h2>Session details</h2>
+
+            <dl class="facts">
+
+                <div>
+                    <dt>
+                        <i class="bi bi-person"></i>
+                        Organizer
+                    </dt>
+
+                    <dd>
+                        @Model.OrganizerName
+                    </dd>
+                </div>
+
+
+                <div>
+                    <dt>
+                        <i class="bi bi-people"></i>
+                        Group size
+                    </dt>
+
+                    <dd>
+                        Up to @Model.MaxParticipants people
+                    </dd>
+                </div>
+
+
+                <div>
+                    <dt>
+                        <i class="bi bi-clock"></i>
+                        Duration
+                    </dt>
+
+                    <dd>
+                        @duration.TotalHours.ToString("0.#") hours
+                    </dd>
+                </div>
+
+            </dl>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+        <div class="form-actions">
+
+            <a class="btn btn-ink"
+               asp-controller="StudySession"
+               asp-action="Edit"
+               asp-route-id="@Model.StudySessionId">
+
+                <i class="bi bi-pencil me-1"></i>
+                Edit
+
+            </a>
+
+
+            <a class="btn btn-outline-danger"
+               asp-controller="StudySession"
+               asp-action="Delete"
+               asp-route-id="@Model.StudySessionId">
+
+                <i class="bi bi-trash me-1"></i>
+                Delete
+
+            </a>
+
+        </div>
+
+    </article>
+
+
+    <!-- ROOM AND TIME -->
+    <aside class="door-sign"
+           aria-label="Room and time">
+
+        <div class="door-sign-header">
+
+            <span class="door-sign-label">
+                <i class="bi bi-door-open"></i>
+                ROOM
+            </span>
+
+            <p class="door-sign-room">
+                @(Model.Room?.Name ?? "Unknown room")
+            </p>
+
+            @if (Model.Room != null)
+            {
+                <p class="door-sign-building">
+                    <i class="bi bi-building"></i>
+                    @Model.Room.Building
+                </p>
+            }
+
+        </div>
+
+
+        <!-- DATE AND TIME -->
+        <div class="door-sign-time">
+
+            <span>
+                <i class="bi bi-calendar3"></i>
+                @Model.StartTime.ToString("dddd d MMMM")
+            </span>
+
+            <strong>
+                @Model.StartTime.ToString("HH:mm")
+                –
+                @Model.EndTime.ToString("HH:mm")
+            </strong>
+
+        </div>
+
+
+        <!-- STATUS -->
+        @if (isPast)
+        {
+            <div class="door-sign-status">
+
+                <i class="bi bi-check-circle"></i>
+                This session has finished.
+
+            </div>
+        }
+        else
+        {
+            <div class="door-sign-status">
+
+                <i class="bi bi-calendar-check"></i>
+                This session is upcoming.
+
+            </div>
+        }
+
+
+        <!-- ROOM LINK -->
+        @if (Model.Room != null)
+        {
+            <a class="door-sign-link"
+               asp-controller="Room"
+               asp-action="Details"
+               asp-route-id="@Model.RoomId">
+
+                See the room's schedule
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
+        }
+
+    </aside>
+
+</div>

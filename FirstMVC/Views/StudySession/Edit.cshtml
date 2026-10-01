@@ -1,0 +1,63 @@
+@model StudyRoomBooking.Models.StudySession
+
+@{
+    ViewData["Title"] = "Edit session";
+    ViewData["SubmitLabel"] = "Save changes";
+
+    ViewData["CancelUrl"] = Url.Action(
+        "Details",
+        "StudySession",
+        new { id = Model.StudySessionId }
+    );
+}
+
+<nav class="back-link">
+
+    <a asp-controller="StudySession"
+       asp-action="Details"
+       asp-route-id="@Model.StudySessionId">
+
+        <i class="bi bi-arrow-left"></i>
+        Back to the session
+
+    </a>
+
+</nav>
+
+
+<div class="form-head">
+
+    <div class="form-head-content">
+
+        <span class="form-kicker">
+            EDIT STUDY SESSION
+        </span>
+
+        <h1>
+            Edit session
+        </h1>
+
+        <p class="text-muted">
+            Update the study details, room or time.
+            If you change the room or time, we will check
+            that the room is still available.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="form-container">
+
+    <partial name="_SessionForm"
+             model="Model" />
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
