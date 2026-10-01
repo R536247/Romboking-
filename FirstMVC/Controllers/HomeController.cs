@@ -7,7 +7,7 @@ using StudyRoomBooking.ViewModels;
 
 namespace StudyRoomBooking.Controllers;
 
-// Front page and the global error / status code pages.
+// Front page and the global error  status code pages.
 public class HomeController : Controller
 {
     private readonly IStudySessionRepository _sessionRepository;
@@ -22,7 +22,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    // GET: /
+    // GET: 
     public async Task<IActionResult> Index()
     {
         var upcoming = await _sessionRepository.GetUpcoming(4);

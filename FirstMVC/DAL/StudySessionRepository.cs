@@ -24,7 +24,7 @@ public class StudySessionRepository : IStudySessionRepository
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                // LIKE is case-insensitive in SQLite, so "itpe" also finds "ITPE3200"
+                // like is case-insensitive in SQLite, so "itpe" also finds "ITPE3200"
                 var pattern = $"%{search.Trim()}%";
                 query = query.Where(s =>
                     EF.Functions.Like(s.CourseCode, pattern) ||
@@ -134,9 +134,9 @@ public class StudySessionRepository : IStudySessionRepository
     }
 
 
-    /// Returns true if the room already has a session overlapping the given time span.
-    /// Two spans overlap when each one starts before the other ends.
-    /// excludeSessionId is used when editing, so a session does not conflict with itself.
+    // Returns true if the room already has a session overlapping the given time span.
+    // Two spans overlap when each one starts before the other ends.
+    // excludeSessionId is used when editing, so a session does not conflict with itself.
     
     public async Task<bool> HasConflict(int roomId, DateTime start, DateTime end, int? excludeSessionId = null)
     {

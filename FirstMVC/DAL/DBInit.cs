@@ -1,8 +1,8 @@
 using StudyRoomBooking.Models;
-
+ 
 namespace StudyRoomBooking.DAL;
-
-// Creates the database on startup and fills it with sample data the first time
+ 
+// Creates the database on startup and fills it with sample data the first time.
 public static class DBInit
 {
     public static void Seed(IApplicationBuilder app)
@@ -10,13 +10,19 @@ public static class DBInit
         using var scope = app.ApplicationServices.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<AppDbContext>>();
-
+        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+ 
         try
         {
-            // During development, uncomment to reset the database on every start:
-            // db.Database.EnsureDeleted();
+            // Only reset when explicitly asked for, so normal runs keep your data
+            if (config.GetValue<bool>("ResetDb"))
+            {
+                db.Database.EnsureDeleted();
+                logger.LogWarning("[DBInit] Database deleted because ResetDb=true");
+            }
+ 
             db.Database.EnsureCreated();
-
+ 
             if (!db.Rooms.Any())
             {
                 db.Rooms.AddRange(
@@ -24,32 +30,43 @@ public static class DBInit
                     new Room { Name = "Group room 4.14", Building = "Pilestredet 35", Capacity = 4, HasScreen = false },
                     new Room { Name = "Study room B210", Building = "Pilestredet 32", Capacity = 8, HasScreen = true },
                     new Room { Name = "Library group room 3", Building = "Learning Centre, P46", Capacity = 10, HasScreen = true },
-                    new Room { Name = "Study room K120", Building = "Kjeller campus", Capacity = 6, HasScreen = false },
+                    new Room { Name = "Study room K120", Building = "Kjeller campus", Capacity = 5, HasScreen = false },
                     new Room { Name = "Study room K121", Building = "Pilestredet 48", Capacity = 6, HasScreen = false },
-                    new Room { Name = "Study room K122", Building = "Pilestredet 50", Capacity = 6, HasScreen = true }
+                    new Room { Name = "Study room K122", Building = "Pilestredet 50", Capacity = 4, HasScreen = true }
                 );
                 db.SaveChanges();
                 logger.LogInformation("[DBInit] Seeded rooms");
             }
-
+ 
             if (!db.StudySessions.Any())
             {
                 var rooms = db.Rooms.OrderBy(r => r.RoomId).ToList();
                 var day = DateTime.Today;
-                // Add some study sessions to see how the app looks with data. These are not meant to be realistic, just to show the UI.
+ 
+                // Sample sessions so the UI has something to show. Not meant to be realistic.
                 db.StudySessions.AddRange(
                     new StudySession
                     {
-                        CourseCode = "ITPE3200", Subject = "Web Applications", Topic = "Repository pattern and EF Core",
+                        CourseCode = "ITPE3200",
+                        Subject = "Web Applications",
+                        Topic = "Repository pattern and EF Core",
                         Description = "Going through the lecture demo together and fixing our own projects.",
-                        StartTime = day.AddDays(1).AddHours(10), EndTime = day.AddDays(1).AddHours(12),
-                        MaxParticipants = 6, OrganizerName = "Ingrid", RoomId = rooms[0].RoomId
+                        StartTime = day.AddDays(1).AddHours(10),
+                        EndTime = day.AddDays(1).AddHours(12),
+                        MaxParticipants = 6,
+                        OrganizerName = "Ingrid",
+                        RoomId = rooms[0].RoomId
                     },
                     new StudySession
                     {
-                        CourseCode = "DATA2410", Subject = "Networking and Cloud Computing", Topic = "Subnetting exercises",
-                        StartTime = day.AddDays(1).AddHours(13), EndTime = day.AddDays(1).AddHours(15),
-                        MaxParticipants = 4, OrganizerName = "Amir", RoomId = rooms[1].RoomId
+                        CourseCode = "DATA2410",
+                        Subject = "Networking and Cloud Computing",
+                        Topic = "Subnetting exercises",
+                        StartTime = day.AddDays(1).AddHours(13),
+                        EndTime = day.AddDays(1).AddHours(15),
+                        MaxParticipants = 4,
+                        OrganizerName = "Amir",
+                        RoomId = rooms[1].RoomId
                     }
                 );
                 db.SaveChanges();
@@ -59,7 +76,7 @@ public static class DBInit
         catch (Exception e)
         {
             logger.LogCritical(e, "[DBInit] Failed to create or seed the database");
-            throw; // the app cannot run without a database
+            throw; 
         }
     }
 }

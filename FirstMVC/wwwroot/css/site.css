@@ -1,4 +1,4 @@
-/* ---------- Base ---------- */
+/* Base */
 
 :root {
   --ink: #1d2433;
@@ -47,7 +47,7 @@ h1, h2, h3 {
   text-align: start;
 }
 
-/* ---------- Buttons ---------- */
+/* Buttons */
 
 .btn-ink {
   color: #fff;
@@ -85,7 +85,7 @@ h1, h2, h3 {
   border-color: var(--signal-dark);
 }
 
-/* ---------- Shared page parts ---------- */
+/* shared page parts */
 
 .eyebrow, .form-kicker, .section-kicker {
   display: inline-block;
@@ -160,7 +160,7 @@ h1, h2, h3 {
   margin-top: 1rem;
 }
 
-/* ---------- Home ---------- */
+/* Home */
 
 .welcome-section {
   padding: 2rem 0 1.5rem;
@@ -234,7 +234,7 @@ h1, h2, h3 {
   height: 100%;
 }
 
-/* ---------- Session slot (partial) ---------- */
+/* Session slot partial */
 
 .slot-list {
   display: flex;
@@ -346,7 +346,7 @@ h1, h2, h3 {
   }
 }
 
-/* ---------- Session list and search ---------- */
+/* Session list and search */
 
 .session-search {
   margin-bottom: 1.5rem;
@@ -375,7 +375,7 @@ h1, h2, h3 {
   font-size: .9rem;
 }
 
-/* ---------- Rooms ---------- */
+/* Rooms */
 
 .room-table {
   background: var(--card);
@@ -403,7 +403,7 @@ h1, h2, h3 {
   margin-right: .25rem;
 }
 
-/* ---------- Session form ---------- */
+/* Session form */
 
 .form-head {
   margin-bottom: 1.5rem;
@@ -501,7 +501,7 @@ h1, h2, h3 {
   margin-top: 1.5rem;
 }
 
-/* ---------- Session details ---------- */
+/* Session details */
 
 .details-grid {
   display: grid;
@@ -622,7 +622,7 @@ h1, h2, h3 {
   color: #fff;
 }
 
-/* ---------- Delete confirmation ---------- */
+/* Delete confirmation */
 
 .confirm-panel {
   max-width: 720px;
@@ -642,7 +642,7 @@ h1, h2, h3 {
   color: var(--bs-danger);
 }
 
-/* ---------- Status pages (404 etc.) ---------- */
+/* Status pages (404 etc.)*/
 
 .status-page {
   text-align: center;

@@ -87,7 +87,7 @@ public class StudySessionController : Controller
         return RedirectToAction(nameof(Details), new { id = session.StudySessionId });
     }
 
-    // GET: /StudySession/Edit/5
+    // GET: StudySession Edit 5
     public async Task<IActionResult> Edit(int id)
     {
         var session = await _sessionRepository.GetById(id);
