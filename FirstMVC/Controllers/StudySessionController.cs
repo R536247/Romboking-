@@ -21,7 +21,7 @@ public class StudySessionController : Controller
         _logger = logger;
     }
 
-    // GET: /StudySession?search=ITPE3200
+    // GET: StudySession?search=ITPE3200
     public async Task<IActionResult> Index(string? search)
     {
         var sessions = await _sessionRepository.GetAll(search);
@@ -35,7 +35,7 @@ public class StudySessionController : Controller
         return View(new StudySessionListViewModel { Sessions = sessions, Search = search });
     }
 
-    // GET: /StudySession/Details/5
+    // GET: StudySession Details 5
     public async Task<IActionResult> Details(int id)
     {
         var session = await _sessionRepository.GetById(id);
@@ -47,7 +47,7 @@ public class StudySessionController : Controller
         return View(session);
     }
 
-    // GET: /StudySession/Create (optionally ?roomId=2 to preselect a room)
+    // GET: StudySession Create (optionally ?roomId=2 to preselect a room)
     public async Task<IActionResult> Create(int? roomId)
     {
         var tomorrow = DateTime.Today.AddDays(1);
@@ -62,7 +62,7 @@ public class StudySessionController : Controller
         return View(session);
     }
 
-    // POST: /StudySession/Create
+    // POST:  StudySession Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(StudySession session)
@@ -101,7 +101,7 @@ public class StudySessionController : Controller
         return View(session);
     }
 
-    // POST: /StudySession/Edit/5
+    // POST: StudySession Edit 5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, StudySession session)
@@ -133,7 +133,7 @@ public class StudySessionController : Controller
         return RedirectToAction(nameof(Details), new { id = session.StudySessionId });
     }
 
-    // GET: /StudySession/Delete/5 (confirmation page)
+    // GET: StudySession Delete 5 (confirmation page)
     public async Task<IActionResult> Delete(int id)
     {
         var session = await _sessionRepository.GetById(id);
@@ -145,7 +145,7 @@ public class StudySessionController : Controller
         return View(session);
     }
 
-    // POST: /StudySession/Delete/5
+    // POST: StudySession Delete 5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
@@ -160,14 +160,14 @@ public class StudySessionController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // ---------- Helpers ----------
+    // Helpers 
 
     // Business rules that need the database: the room must exist, have enough
     // seats, and be free in the chosen time span.
     private async Task ValidateBookingAsync(StudySession session, int? excludeSessionId = null)
     {
         if (session.RoomId == 0)
-            return; // "Choose a room" is already reported by the [Range] attribute
+            return; 
 
         var room = await _roomRepository.GetById(session.RoomId);
         if (room == null)
