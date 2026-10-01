@@ -24,7 +24,9 @@ public static class DBInit
                     new Room { Name = "Group room 4.14", Building = "Pilestredet 35", Capacity = 4, HasScreen = false },
                     new Room { Name = "Study room B210", Building = "Pilestredet 32", Capacity = 8, HasScreen = true },
                     new Room { Name = "Library group room 3", Building = "Learning Centre, P46", Capacity = 10, HasScreen = true },
-                    new Room { Name = "Study room K120", Building = "Kjeller campus", Capacity = 6, HasScreen = false }
+                    new Room { Name = "Study room K120", Building = "Kjeller campus", Capacity = 6, HasScreen = false },
+                    new Room { Name = "Study room K121", Building = "Pilestredet 48", Capacity = 6, HasScreen = false },
+                    new Room { Name = "Study room K122", Building = "Pilestredet 50", Capacity = 6, HasScreen = true }
                 );
                 db.SaveChanges();
                 logger.LogInformation("[DBInit] Seeded rooms");
@@ -34,7 +36,7 @@ public static class DBInit
             {
                 var rooms = db.Rooms.OrderBy(r => r.RoomId).ToList();
                 var day = DateTime.Today;
-
+                // Add some study sessions to see how the app looks with data. These are not meant to be realistic, just to show the UI.
                 db.StudySessions.AddRange(
                     new StudySession
                     {
@@ -48,25 +50,6 @@ public static class DBInit
                         CourseCode = "DATA2410", Subject = "Networking and Cloud Computing", Topic = "Subnetting exercises",
                         StartTime = day.AddDays(1).AddHours(13), EndTime = day.AddDays(1).AddHours(15),
                         MaxParticipants = 4, OrganizerName = "Amir", RoomId = rooms[1].RoomId
-                    },
-                    new StudySession
-                    {
-                        CourseCode = "DAPE1400", Subject = "Programming", Topic = "Exam prep: loops and recursion",
-                        Description = "Bring old exam sets. Beginners welcome.",
-                        StartTime = day.AddDays(2).AddHours(9), EndTime = day.AddDays(2).AddHours(12),
-                        MaxParticipants = 8, OrganizerName = "Sofie", RoomId = rooms[2].RoomId
-                    },
-                    new StudySession
-                    {
-                        CourseCode = "ITPE3200", Subject = "Web Applications", Topic = "Server-side validation",
-                        StartTime = day.AddDays(3).AddHours(14), EndTime = day.AddDays(3).AddHours(16),
-                        MaxParticipants = 10, OrganizerName = "Jonas", RoomId = rooms[3].RoomId
-                    },
-                    new StudySession
-                    {
-                        CourseCode = "DATA1700", Subject = "Web Programming", Topic = "JavaScript and fetch",
-                        StartTime = day.AddDays(4).AddHours(11), EndTime = day.AddDays(4).AddHours(13),
-                        MaxParticipants = 5, OrganizerName = "Maja", RoomId = rooms[4].RoomId
                     }
                 );
                 db.SaveChanges();

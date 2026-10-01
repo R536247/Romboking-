@@ -1,5 +1,20 @@
+/* ---------- Base ---------- */
+
+:root {
+  --ink: #1d2433;
+  --ink-soft: #4a5468;
+  --signal: #f26b3a;
+  --signal-dark: #d9562a;
+  --paper: #f7f6f2;
+  --line: #e3e1da;
+  --card: #ffffff;
+  --radius: 12px;
+}
+
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -8,17 +23,19 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
   margin-bottom: 60px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+h1, h2, h3 {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(242, 107, 58, .5);
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +45,614 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn-ink {
+  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-ink:hover, .btn-ink:focus {
+  color: #fff;
+  background: #2d3750;
+  border-color: #2d3750;
+}
+
+.btn-outline-ink {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: transparent;
+}
+
+.btn-outline-ink:hover, .btn-outline-ink:focus {
+  color: #fff;
+  background: var(--ink);
+}
+
+.btn-signal {
+  color: #fff;
+  background: var(--signal);
+  border-color: var(--signal);
+  font-weight: 600;
+}
+
+.btn-signal:hover, .btn-signal:focus {
+  color: #fff;
+  background: var(--signal-dark);
+  border-color: var(--signal-dark);
+}
+
+/* ---------- Shared page parts ---------- */
+
+.eyebrow, .form-kicker, .section-kicker {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--signal);
+  margin-bottom: .35rem;
+}
+
+.back-link {
+  margin-bottom: 1rem;
+}
+
+.back-link a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  color: var(--ink);
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-head h1 {
+  margin-bottom: .25rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.course-code {
+  display: inline-block;
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .05em;
+  color: var(--ink);
+  background: #fde4d9;
+  padding: .15rem .5rem;
+  border-radius: 6px;
+}
+
+.empty-state, .empty-session-card {
+  text-align: center;
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 2.5rem 1.5rem;
+}
+
+.empty-state > .bi, .empty-icon {
+  font-size: 2rem;
+  color: var(--signal);
+  margin-bottom: .75rem;
+}
+
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+/* ---------- Home ---------- */
+
+.welcome-section {
+  padding: 2rem 0 1.5rem;
+}
+
+.welcome-section h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.5rem;
+}
+
+.room-summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.room-summary strong {
+  font-size: 1.5rem;
+  margin-right: .35rem;
+}
+
+.summary-icon {
+  font-size: 1.5rem;
+  color: var(--signal);
+}
+
+.section-heading, .sessions-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+
+.section-heading h2, .sessions-heading h2 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.view-all {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.view-all:hover {
+  color: var(--signal);
+}
+
+.session-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 1rem;
+}
+
+.session-card .slot {
+  height: 100%;
+}
+
+/* ---------- Session slot (partial) ---------- */
+
+.slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.slot {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+
+.slot:hover {
+  color: var(--ink);
+  border-color: var(--signal);
+  box-shadow: 0 .5rem 1.25rem rgba(29, 36, 51, .08);
+  transform: translateY(-1px);
+}
+
+.slot-past {
+  opacity: .65;
+}
+
+.slot-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 6.5rem;
+  padding-right: 1rem;
+  border-right: 1px solid var(--line);
+}
+
+.slot-day {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink-soft);
+}
+
+.slot-hours {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.slot-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.slot-heading {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .25rem;
+}
+
+.slot-topic {
+  font-size: 1.05rem;
+  margin: 0 0 .15rem;
+}
+
+.slot-subject {
+  color: var(--ink-soft);
+  font-size: .9rem;
+  margin-bottom: .4rem;
+}
+
+.slot-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem 1rem;
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+.slot-meta .bi {
+  margin-right: .2rem;
+}
+
+.slot-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 575.98px) {
+  .slot {
+    flex-direction: column;
+  }
+
+  .slot-time {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0 0 .5rem;
+    flex-direction: row;
+    gap: .5rem;
+  }
+
+  .slot-arrow {
+    display: none;
+  }
+}
+
+/* ---------- Session list and search ---------- */
+
+.session-search {
+  margin-bottom: 1.5rem;
+}
+
+.search-bar .input-group-text {
+  background: var(--card);
+}
+
+.search-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: .75rem;
+  font-size: .9rem;
+}
+
+.clear-search {
+  color: var(--signal-dark);
+  text-decoration: none;
+}
+
+.search-result-label {
+  color: var(--ink-soft);
+  font-size: .9rem;
+}
+
+/* ---------- Rooms ---------- */
+
+.room-table {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.room-table .table {
+  --bs-table-bg: transparent;
+}
+
+.room-table td .btn + .btn {
+  margin-left: .25rem;
+}
+
+.room-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem 1.25rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.room-facts .bi {
+  margin-right: .25rem;
+}
+
+/* ---------- Session form ---------- */
+
+.form-head {
+  margin-bottom: 1.5rem;
+}
+
+.form-container {
+  max-width: 820px;
+}
+
+.form-section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-section-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-section-header h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.form-section-header p {
+  color: var(--ink-soft);
+  margin: 0;
+  font-size: .9rem;
+}
+
+.section-number {
+  font-weight: 700;
+  color: var(--signal);
+  font-size: 1.1rem;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.optional-badge {
+  font-size: .75rem;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: .1rem .6rem;
+}
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon > .bi {
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-soft);
+  pointer-events: none;
+}
+
+.input-icon > .form-control {
+  padding-left: 2.3rem;
+}
+
+.invalid-text {
+  display: block;
+  color: var(--bs-danger);
+  font-size: .85rem;
+  margin-top: .25rem;
+}
+
+.input-validation-error {
+  border-color: var(--bs-danger);
+}
+
+.session-form-actions, .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.session-form-actions {
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* ---------- Session details ---------- */
+
+.details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 767.98px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.details-main {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+}
+
+.details-header h1 {
+  margin: .75rem 0 .25rem;
+}
+
+.details-header .subject {
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+}
+
+.details-description, .session-info {
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.details-description h2, .session-info h2 {
+  font-size: 1.05rem;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.facts dt {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.facts dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.details-main .form-actions {
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+/* The room card on the details page looks like a sign on a door */
+.door-sign {
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.door-sign-label {
+  font-size: .75rem;
+  letter-spacing: .12em;
+  font-weight: 700;
+  color: var(--signal);
+}
+
+.door-sign-room {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: .25rem 0;
+}
+
+.door-sign-building {
+  color: rgba(255, 255, 255, .7);
+  margin: 0;
+}
+
+.door-sign-time {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, .15);
+  border-bottom: 1px solid rgba(255, 255, 255, .15);
+  padding: 1rem 0;
+  margin: 1rem 0;
+}
+
+.door-sign-time strong {
+  font-size: 1.75rem;
+}
+
+.door-sign-status {
+  color: rgba(255, 255, 255, .8);
+  font-size: .9rem;
+}
+
+.door-sign-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--signal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.door-sign-link:hover {
+  color: #fff;
+}
+
+/* ---------- Delete confirmation ---------- */
+
+.confirm-panel {
+  max-width: 720px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+}
+
+.confirm-header {
+  display: flex;
+  gap: 1rem;
+}
+
+.confirm-icon {
+  font-size: 1.75rem;
+  color: var(--bs-danger);
+}
+
+/* ---------- Status pages (404 etc.) ---------- */
+
+.status-page {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.status-code {
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--signal);
+  line-height: 1;
+  margin-bottom: 1rem;
 }
