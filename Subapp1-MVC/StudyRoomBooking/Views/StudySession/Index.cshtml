@@ -1,0 +1,89 @@
+@model SessionFilterViewModel
+@{
+    ViewData["Title"] = "Study sessions";
+    var count = Model.Sessions.Count();
+}
+<div class="page-head">
+    <div>
+        <h1>Study sessions</h1>
+        <p class="text-muted mb-0">Find a group for your course, or book a room for a new one.</p>
+    </div>
+    <a class="btn btn-signal" asp-action="Create"><i class="bi bi-plus-lg me-1"></i>Book a room</a>
+</div>
+
+<form method="get" asp-action="Index" class="filter-panel" role="search" aria-label="Filter study sessions">
+    <div class="row g-3 align-items-end">
+        <div class="col-lg-4 col-md-6">
+            <label asp-for="Search" class="form-label">Course, subject or topic</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input asp-for="Search" class="form-control" placeholder="e.g. ITPE3200" />
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-6">
+            <label asp-for="Building" class="form-label"></label>
+            <select asp-for="Building" asp-items="Model.BuildingOptions" class="form-select">
+                <option value="">All buildings</option>
+            </select>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <label asp-for="RoomId" class="form-label"></label>
+            <select asp-for="RoomId" asp-items="Model.RoomOptions" class="form-select">
+                <option value="">All rooms</option>
+            </select>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <label asp-for="Date" class="form-label"></label>
+            <input asp-for="Date" class="form-control" />
+        </div>
+        <div class="col-12 filter-row">
+            <div class="form-check">
+                <input asp-for="OnlyAvailable" class="form-check-input" />
+                <label asp-for="OnlyAvailable" class="form-check-label"></label>
+            </div>
+            <div class="form-check">
+                <input asp-for="IncludeFinished" class="form-check-input" />
+                <label asp-for="IncludeFinished" class="form-check-label"></label>
+            </div>
+            <div class="filter-buttons">
+                <button type="submit" class="btn btn-ink"><i class="bi bi-funnel me-1"></i>Apply filters</button>
+                @if (Model.HasActiveFilters)
+                {
+                    <a asp-action="Index" class="btn btn-outline-ink">Clear</a>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (count > 0)
+{
+    <p class="result-count">
+        @count @(count == 1 ? "session" : "sessions") @(Model.HasActiveFilters ? "match your filters" : "coming up")
+    </p>
+    <div class="slot-list">
+        @foreach (var session in Model.Sessions)
+        {
+            <partial name="_SessionSlot" model="session" />
+        }
+    </div>
+}
+else if (Model.HasActiveFilters)
+{
+    <div class="empty-state">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <p>No sessions match your filters. Try removing a filter, or start a group yourself.</p>
+        <div class="d-flex gap-2 justify-content-center flex-wrap">
+            <a class="btn btn-outline-ink" asp-action="Index">Clear filters</a>
+            <a class="btn btn-ink" asp-action="Create">Book a room</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="bi bi-calendar-plus" aria-hidden="true"></i>
+        <p>No sessions are booked yet. Book a room and others can join you.</p>
+        <a class="btn btn-ink" asp-action="Create">Book a room</a>
+    </div>
+}

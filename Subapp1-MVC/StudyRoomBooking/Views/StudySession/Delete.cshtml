@@ -1,0 +1,24 @@
+@model StudySession
+@{
+    ViewData["Title"] = "Delete session";
+    var others = Model.Participations.Count - 1;
+}
+<div class="confirm-panel">
+    <h1>Delete this session?</h1>
+    <p>The booking is removed and the room becomes free for others. This cannot be undone.</p>
+    @if (others > 0)
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>@others other @(others == 1 ? "student has" : "students have") joined. Their place and all messages are removed too.
+        </div>
+    }
+
+    <div class="slot-list my-4">
+        <partial name="_SessionSlot" model="Model" />
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.StudySessionId" method="post" class="form-actions">
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete session</button>
+        <a class="btn btn-outline-ink" asp-action="Details" asp-route-id="@Model.StudySessionId">Keep it</a>
+    </form>
+</div>

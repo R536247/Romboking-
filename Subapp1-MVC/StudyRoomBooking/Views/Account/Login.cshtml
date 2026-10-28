@@ -1,0 +1,50 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Log in";
+}
+<div class="auth-layout">
+    <div class="auth-panel">
+        <h1>Log in</h1>
+        <p class="text-muted">Log in to book rooms, join study groups and write messages.</p>
+
+        <form method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" autocomplete="username" />
+                <span asp-validation-for="Email" class="invalid-text"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                <span asp-validation-for="Password" class="invalid-text"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label"></label>
+            </div>
+            <button type="submit" class="btn btn-ink w-100">Log in</button>
+        </form>
+
+        <p class="auth-switch">New here? <a asp-action="Register">Create an account</a></p>
+    </div>
+
+    @* Demo accounts make it easy for the examiner to test both roles *@
+    <aside class="demo-box" aria-label="Demo accounts">
+        <h2>Demo accounts</h2>
+        <dl>
+            <dt>Admin</dt>
+            <dd>admin@studyroom.no<br />Admin1234</dd>
+            <dt>Student</dt>
+            <dd>ingrid@studyroom.no<br />Student1234</dd>
+            <dt>Student</dt>
+            <dd>amir@studyroom.no<br />Student1234</dd>
+        </dl>
+    </aside>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

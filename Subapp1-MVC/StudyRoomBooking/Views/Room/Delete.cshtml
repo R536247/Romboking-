@@ -1,0 +1,24 @@
+@model Room
+@{
+    ViewData["Title"] = "Delete room";
+    var hasBookings = Model.StudySessions.Count > 0;
+}
+<div class="confirm-panel">
+    <h1>Delete @Model.Name?</h1>
+
+    @if (hasBookings)
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>This room has @Model.StudySessions.Count @(Model.StudySessions.Count == 1 ? "booking" : "bookings") and cannot be deleted. Delete the sessions first.
+        </div>
+        <a class="btn btn-outline-ink" asp-action="Details" asp-route-id="@Model.RoomId">Back to the room</a>
+    }
+    else
+    {
+        <p>@Model.Name in @Model.Building is removed and can no longer be booked. This cannot be undone.</p>
+        <form asp-action="Delete" asp-route-id="@Model.RoomId" method="post" class="form-actions">
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete room</button>
+            <a class="btn btn-outline-ink" asp-action="Details" asp-route-id="@Model.RoomId">Keep it</a>
+        </form>
+    }
+</div>

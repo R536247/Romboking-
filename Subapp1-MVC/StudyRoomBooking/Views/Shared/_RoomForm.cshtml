@@ -1,0 +1,35 @@
+@model RoomFormViewModel
+@* Shared form for creating and editing rooms (admin). *@
+<form method="post" class="form-panel" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <input type="hidden" asp-for="RoomId" />
+
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Group room 4.12" />
+            <span asp-validation-for="Name" class="invalid-text"></span>
+        </div>
+        <div class="col-sm-6">
+            <label asp-for="Building" class="form-label"></label>
+            <input asp-for="Building" class="form-control" placeholder="Pilestredet 35" />
+            <span asp-validation-for="Building" class="invalid-text"></span>
+        </div>
+        <div class="col-sm-4">
+            <label asp-for="Capacity" class="form-label"></label>
+            <input asp-for="Capacity" class="form-control" min="1" max="50" />
+            <span asp-validation-for="Capacity" class="invalid-text"></span>
+        </div>
+        <div class="col-sm-8 d-flex align-items-end">
+            <div class="form-check mb-2">
+                <input asp-for="HasScreen" class="form-check-input" />
+                <label asp-for="HasScreen" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-ink"><i class="bi bi-check-lg me-1"></i>@ViewData["SubmitLabel"]</button>
+        <a href="@ViewData["CancelUrl"]" class="btn btn-outline-ink">Cancel</a>
+    </div>
+</form>

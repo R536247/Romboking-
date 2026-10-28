@@ -1,0 +1,34 @@
+@model StudySession
+@* One session shown like an entry on a room's door schedule: time on the left, content on the right.
+   Requires Room, Organizer and Participations to be loaded. *@
+@{
+    var joined = Model.Participations.Count;
+}
+<a class="slot @(Model.IsFinished ? "slot-past" : "")" asp-controller="StudySession" asp-action="Details" asp-route-id="@Model.StudySessionId">
+    <div class="slot-time">
+        <span class="slot-day">@Model.StartTime.ToString("ddd d MMM")</span>
+        <span class="slot-hours">@Model.StartTime.ToString("HH:mm")–@Model.EndTime.ToString("HH:mm")</span>
+    </div>
+    <div class="slot-body">
+        <div class="slot-heading">
+            <span class="course-code">@Model.CourseCode</span>
+            @if (Model.IsFinished)
+            {
+                <span class="badge text-bg-secondary">Finished</span>
+            }
+            else if (Model.IsFull)
+            {
+                <span class="badge badge-full">Full</span>
+            }
+        </div>
+        <h3 class="slot-topic">@Model.Topic</h3>
+        <p class="slot-meta">
+            <span><i class="bi bi-door-open"></i> @(Model.Room?.Name ?? "Unknown room")</span>
+            @if (Model.Organizer != null)
+            {
+                <span><i class="bi bi-person"></i> @Model.Organizer.DisplayName</span>
+            }
+            <span><i class="bi bi-people"></i> @joined of @Model.MaxParticipants joined</span>
+        </p>
+    </div>
+</a>

@@ -1,0 +1,10 @@
+bin/
+obj/
+Logs/
+*.db
+*.db-shm
+*.db-wal
+TestResults/
+.vs/
+.idea/
+.DS_Store

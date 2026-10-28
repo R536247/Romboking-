@@ -1,0 +1,53 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "My page";
+}
+<div class="page-head">
+    <div>
+        <h1>@Model.Student.DisplayName</h1>
+        <p class="room-facts">
+            <span><i class="bi bi-envelope"></i> @Model.Email</span>
+            @if (!string.IsNullOrWhiteSpace(Model.Student.StudyProgram))
+            {
+                <span><i class="bi bi-mortarboard"></i> @Model.Student.StudyProgram</span>
+            }
+        </p>
+    </div>
+    <a class="btn btn-outline-ink" asp-action="Edit"><i class="bi bi-pencil me-1"></i>Edit profile</a>
+</div>
+
+<h2 class="section-title">Sessions you organize</h2>
+@if (Model.OrganizedSessions.Any())
+{
+    <div class="slot-list mb-5">
+        @foreach (var session in Model.OrganizedSessions)
+        {
+            <partial name="_SessionSlot" model="session" />
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state mb-5">
+        <p>You have not booked any rooms yet.</p>
+        <a class="btn btn-ink" asp-controller="StudySession" asp-action="Create">Book a room</a>
+    </div>
+}
+
+<h2 class="section-title">Sessions you have joined</h2>
+@if (Model.JoinedSessions.Any())
+{
+    <div class="slot-list">
+        @foreach (var session in Model.JoinedSessions)
+        {
+            <partial name="_SessionSlot" model="session" />
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <p>You have not joined any sessions yet.</p>
+        <a class="btn btn-ink" asp-controller="StudySession" asp-action="Index">Find a study group</a>
+    </div>
+}

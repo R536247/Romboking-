@@ -1,0 +1,31 @@
+@model MessageFormViewModel
+@{
+    ViewData["Title"] = "Edit message";
+}
+<nav class="back-link">
+    <a asp-controller="StudySession" asp-action="Details" asp-route-id="@Model.StudySessionId" asp-fragment="messages">
+        <i class="bi bi-arrow-left"></i> Back to the session
+    </a>
+</nav>
+<div class="form-head">
+    <h1>Edit message</h1>
+</div>
+
+<form method="post" class="form-panel" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <input type="hidden" asp-for="MessageId" />
+    <input type="hidden" asp-for="StudySessionId" />
+
+    <label asp-for="Content" class="form-label"></label>
+    <textarea asp-for="Content" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Content" class="invalid-text"></span>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-ink"><i class="bi bi-check-lg me-1"></i>Save message</button>
+        <a class="btn btn-outline-ink" asp-controller="StudySession" asp-action="Details" asp-route-id="@Model.StudySessionId" asp-fragment="messages">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

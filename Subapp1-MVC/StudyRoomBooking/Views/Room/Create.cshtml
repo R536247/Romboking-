@@ -1,0 +1,17 @@
+@model RoomFormViewModel
+@{
+    ViewData["Title"] = "Add room";
+    ViewData["SubmitLabel"] = "Add room";
+    ViewData["CancelUrl"] = Url.Action("Index");
+}
+<nav class="back-link"><a asp-action="Index"><i class="bi bi-arrow-left"></i> All rooms</a></nav>
+<div class="form-head">
+    <h1>Add room</h1>
+    <p class="text-muted">The room can be booked as soon as it is added.</p>
+</div>
+
+<partial name="_RoomForm" model="Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,17 @@
+@model RoomFormViewModel
+@{
+    ViewData["Title"] = "Edit room";
+    ViewData["SubmitLabel"] = "Save changes";
+    ViewData["CancelUrl"] = Url.Action("Details", new { id = Model.RoomId });
+}
+<nav class="back-link"><a asp-action="Details" asp-route-id="@Model.RoomId"><i class="bi bi-arrow-left"></i> Back to the room</a></nav>
+<div class="form-head">
+    <h1>Edit room</h1>
+    <p class="text-muted">Capacity cannot be lower than what upcoming sessions in the room allow.</p>
+</div>
+
+<partial name="_RoomForm" model="Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

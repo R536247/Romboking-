@@ -1,0 +1,32 @@
+@model ProfileEditViewModel
+@{
+    ViewData["Title"] = "Edit profile";
+}
+<nav class="back-link"><a asp-action="Index"><i class="bi bi-arrow-left"></i> My page</a></nav>
+<div class="form-head">
+    <h1>Edit profile</h1>
+</div>
+
+<form method="post" class="form-panel" novalidate>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <label asp-for="DisplayName" class="form-label"></label>
+            <input asp-for="DisplayName" class="form-control" />
+            <span asp-validation-for="DisplayName" class="invalid-text"></span>
+        </div>
+        <div class="col-sm-6">
+            <label asp-for="StudyProgram" class="form-label">Study program <span class="optional">(optional)</span></label>
+            <input asp-for="StudyProgram" class="form-control" />
+            <span asp-validation-for="StudyProgram" class="invalid-text"></span>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-ink"><i class="bi bi-check-lg me-1"></i>Save profile</button>
+        <a asp-action="Index" class="btn btn-outline-ink">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

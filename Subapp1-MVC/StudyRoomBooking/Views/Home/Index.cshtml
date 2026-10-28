@@ -1,0 +1,41 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+<section class="hero">
+    <div class="hero-text">
+        <h1>Find a room.<br />Start a study group.</h1>
+        <p class="lead">
+            Book a study room on campus, set the course, topic and time, and let other students join.
+            The booking checks that the room is free, so two groups never end up at the same door.
+        </p>
+        <div class="d-flex gap-2 flex-wrap">
+            <a class="btn btn-signal btn-lg" asp-controller="StudySession" asp-action="Create">
+                <i class="bi bi-plus-lg me-1"></i>Book a room
+            </a>
+            <a class="btn btn-outline-ink btn-lg" asp-controller="StudySession" asp-action="Index">Find a study group</a>
+        </div>
+        <p class="hero-note"><i class="bi bi-building"></i> @Model.RoomCount rooms available across campus</p>
+    </div>
+
+    <div class="board" aria-labelledby="board-title">
+        <h2 id="board-title" class="board-title">Coming up</h2>
+        @if (Model.UpcomingSessions.Any())
+        {
+            <div class="slot-list">
+                @foreach (var session in Model.UpcomingSessions)
+                {
+                    <partial name="_SessionSlot" model="session" />
+                }
+            </div>
+            <a class="board-more" asp-controller="StudySession" asp-action="Index">See all sessions</a>
+        }
+        else
+        {
+            <div class="empty-state">
+                <p>No sessions are booked yet.</p>
+                <a class="btn btn-ink btn-sm" asp-controller="StudySession" asp-action="Create">Book the first one</a>
+            </div>
+        }
+    </div>
+</section>

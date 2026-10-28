@@ -1,0 +1,17 @@
+@model StudySessionFormViewModel
+@{
+    ViewData["Title"] = "Edit session";
+    ViewData["SubmitLabel"] = "Save changes";
+    ViewData["CancelUrl"] = Url.Action("Details", new { id = Model.StudySessionId });
+}
+<nav class="back-link"><a asp-action="Details" asp-route-id="@Model.StudySessionId"><i class="bi bi-arrow-left"></i> Back to the session</a></nav>
+<div class="form-head">
+    <h1>Edit session</h1>
+    <p class="text-muted">If you change the room or time, we check again that the room is free.</p>
+</div>
+
+<partial name="_SessionForm" model="Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,166 @@
+@model StudySessionDetailsViewModel
+@{
+    var session = Model.Session;
+    ViewData["Title"] = $"{session.CourseCode} – {session.Topic}";
+    var detailsUrl = Url.Action("Details", new { id = session.StudySessionId });
+}
+<nav class="back-link"><a asp-action="Index"><i class="bi bi-arrow-left"></i> All study sessions</a></nav>
+
+<div class="details-grid">
+    <article class="details-main">
+        <span class="course-code">@session.CourseCode</span>
+        <h1>@session.Topic</h1>
+        <p class="subject">@session.Subject</p>
+
+        @if (!string.IsNullOrWhiteSpace(session.Description))
+        {
+            <p class="description">@session.Description</p>
+        }
+
+        <dl class="facts">
+            <div><dt>Organizer</dt><dd>@(session.Organizer?.DisplayName ?? "Unknown")</dd></div>
+            <div><dt>Participants</dt><dd>@session.Participations.Count of @session.MaxParticipants</dd></div>
+            <div><dt>Free spots</dt><dd>@(Model.SpotsLeft > 0 ? Model.SpotsLeft.ToString() : "None")</dd></div>
+        </dl>
+
+        @* Join / leave area: what is shown depends on who is looking and the session's state *@
+        <div class="join-box">
+            @if (!Model.IsAuthenticated)
+            {
+                <p>Log in to join this session and write messages.</p>
+                <a class="btn btn-ink" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@detailsUrl">Log in to join</a>
+            }
+            else if (Model.IsOrganizer)
+            {
+                <p><i class="bi bi-star-fill text-warning"></i> You organize this session.</p>
+            }
+            else if (Model.IsParticipant)
+            {
+                <p><i class="bi bi-check-circle-fill text-success"></i> You have joined this session.</p>
+                @if (!Model.IsFinished)
+                {
+                    <form asp-action="Leave" asp-route-id="@session.StudySessionId" method="post">
+                        <button type="submit" class="btn btn-outline-ink">Leave session</button>
+                    </form>
+                }
+            }
+            else if (Model.IsFinished)
+            {
+                <p>This session has finished.</p>
+            }
+            else if (Model.IsFull)
+            {
+                <p>This session is full. Look for another group in the same course.</p>
+                <a class="btn btn-outline-ink" asp-action="Index" asp-route-Search="@session.CourseCode">Other @session.CourseCode sessions</a>
+            }
+            else if (Model.CanJoin)
+            {
+                <p>@Model.SpotsLeft @(Model.SpotsLeft == 1 ? "spot" : "spots") left.</p>
+                <form asp-action="Join" asp-route-id="@session.StudySessionId" method="post">
+                    <button type="submit" class="btn btn-signal"><i class="bi bi-person-plus me-1"></i>Join session</button>
+                </form>
+            }
+        </div>
+
+        @if (Model.CanManage)
+        {
+            <div class="form-actions">
+                <a class="btn btn-ink" asp-action="Edit" asp-route-id="@session.StudySessionId"><i class="bi bi-pencil me-1"></i>Edit</a>
+                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@session.StudySessionId"><i class="bi bi-trash me-1"></i>Delete</a>
+            </div>
+        }
+
+        <section class="participants" aria-labelledby="participants-title">
+            <h2 id="participants-title" class="section-title">Participants</h2>
+            <ul class="participant-list">
+                @foreach (var participation in Model.Participants)
+                {
+                    var name = participation.Student?.DisplayName ?? "Unknown";
+                    var initial = name.Length > 0 ? name.Substring(0, 1).ToUpperInvariant() : "?";
+                    <li>
+                        <span class="avatar" aria-hidden="true">@initial</span>
+                        <span>@name</span>
+                        @if (participation.StudentId == session.OrganizerId)
+                        {
+                            <span class="badge badge-organizer">Organizer</span>
+                        }
+                    </li>
+                }
+            </ul>
+        </section>
+
+        <section id="messages" class="messages" aria-labelledby="messages-title">
+            <h2 id="messages-title" class="section-title">Messages</h2>
+
+            @if (Model.Messages.Any())
+            {
+                <ul class="message-list">
+                    @foreach (var message in Model.Messages)
+                    {
+                        <li class="message @(message.StudentId == Model.CurrentStudentId ? "message-own" : "")">
+                            <div class="message-head">
+                                <strong>@(message.Student?.DisplayName ?? "Unknown")</strong>
+                                <span class="message-time">
+                                    @message.CreatedAt.ToString("d MMM HH:mm")@(message.EditedAt.HasValue ? " (edited)" : "")
+                                </span>
+                            </div>
+                            <p class="message-text">@message.Content</p>
+                            @if (Model.CanEditMessage(message) || Model.CanDeleteMessage(message))
+                            {
+                                <div class="message-actions">
+                                    @if (Model.CanEditMessage(message))
+                                    {
+                                        <a asp-controller="Message" asp-action="Edit" asp-route-id="@message.MessageId">Edit</a>
+                                    }
+                                    @if (Model.CanDeleteMessage(message))
+                                    {
+                                        <form asp-controller="Message" asp-action="Delete" asp-route-id="@message.MessageId" method="post" class="d-inline">
+                                            <button type="submit" class="link-button">Delete</button>
+                                        </form>
+                                    }
+                                </div>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No messages yet.</p>
+            }
+
+            @if (Model.IsParticipant)
+            {
+                <form asp-controller="Message" asp-action="Create" method="post" class="message-form">
+                    <input type="hidden" name="StudySessionId" value="@session.StudySessionId" />
+                    <label for="Content" class="form-label">Write a message</label>
+                    <textarea id="Content" name="Content" class="form-control" rows="2" maxlength="1000" required
+                              placeholder="Ask a question or share what to prepare"></textarea>
+                    <button type="submit" class="btn btn-ink mt-2"><i class="bi bi-send me-1"></i>Post message</button>
+                </form>
+            }
+            else if (Model.IsAuthenticated)
+            {
+                <p class="text-muted small">Join the session to write messages.</p>
+            }
+        </section>
+    </article>
+
+    @* The room "door sign": where and when *@
+    <aside class="door-sign" aria-label="Room and time">
+        <p class="door-sign-room">@(session.Room?.Name ?? "Unknown room")</p>
+        <p class="door-sign-building">@session.Room?.Building</p>
+        <div class="door-sign-time">
+            <span>@session.StartTime.ToString("dddd d MMMM")</span>
+            <strong>@session.StartTime.ToString("HH:mm")–@session.EndTime.ToString("HH:mm")</strong>
+        </div>
+        @if (Model.IsFinished)
+        {
+            <p class="door-sign-status">This session has finished.</p>
+        }
+        @if (session.Room != null)
+        {
+            <a class="door-sign-link" asp-controller="Room" asp-action="Details" asp-route-id="@session.RoomId">See the room's schedule</a>
+        }
+    </aside>
+</div>

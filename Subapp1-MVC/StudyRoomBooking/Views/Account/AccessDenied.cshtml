@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "No access";
+}
+<section class="status-page">
+    <p class="status-code">403</p>
+    <h1>You do not have access to this</h1>
+    <p>Only the organizer of a session, or an administrator, can change it.</p>
+    <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <a class="btn btn-ink" asp-controller="StudySession" asp-action="Index">See study sessions</a>
+        <a class="btn btn-outline-ink" asp-controller="Home" asp-action="Index">Front page</a>
+    </div>
+</section>

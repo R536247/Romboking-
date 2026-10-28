@@ -1,0 +1,14 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+<section class="status-page">
+    <i class="bi bi-exclamation-octagon status-icon" aria-hidden="true"></i>
+    <h1>Something went wrong</h1>
+    <p>The server could not finish your request. The error has been logged. Go back and try again.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p class="text-muted small">Request ID: <code>@Model.RequestId</code></p>
+    }
+    <a class="btn btn-ink" asp-controller="Home" asp-action="Index">Go to the front page</a>
+</section>
